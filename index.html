@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BastionAtackDev</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <span><a href="#"><h1>BastionAtackDev's Portfolio</h1></a></span>
+        <span>
+            <a href="#About-me" class="navigator">About me</a>
+            <a href="#Projects" class="navigator" >Projects</a>
+            <!-- <a href="#" class="navigator" >Contact</a> -->
+        </span>
+    </nav>
+    <section id="About-me">
+        <!-- onmouseover="whoami()" onmouseleave="WhoAmI()" id="whoami" -->
+        <h2 >Who am I?</h2>
+        <p>I am a student learning front-end and back-end development</p>
+        <h2 id="-about-me">💫 About Me</h2>
+            <ul>
+            <li>🔭 I’m currently working on my portfolio website</li>
+            <li>🚀 I’m currently learning web development</li>
+            <li>🤔 I want to learn how to make PWAs (Progresive Web Applications)🖥️📲</li>
+            <li>⌨️ I like using Raspberry Pis for making server-side applications</li>
+            <li>💾 I&#39;m interested about old computers and old tech </li>
+            <li>🎮 I have some experience with game development in Unity</li>
+            </ul>
+            <h2 id="-languages-and-technologies-">💻 Languages and Technologies:</h2>
+            <p><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&amp;logo=c%2B%2B&amp;logoColor=white" alt="C++"> 
+            <img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&amp;logo=css3&amp;logoColor=white" alt="CSS3"> 
+            <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&amp;logo=html5&amp;logoColor=white" alt="HTML5"> 
+            <img src="https://img.shields.io/badge/javascript-FCC624.svg?style=for-the-badge&amp;logo=javascript&amp;logoColor=black" alt="JavaScript"> 
+            <img src="https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&amp;logo=markdown&amp;logoColor=white" alt="Markdown"> 
+            <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&amp;logo=python&amp;logoColor=white" alt="Python"> </p>
+            <p><img src="https://img.shields.io/badge/-RaspberryPi-C51A4A?style=for-the-badge&amp;logo=Raspberry-Pi" alt="Raspberry Pi">
+            <img src="https://img.shields.io/badge/Unity-black?style=for-the-badge&amp;logo=unity&amp;logoColor=white" alt="Unity">&nbsp;
+            <img src="https://img.shields.io/badge/VIM-%2311AB00.svg?style=for-the-badge&amp;logo=vim&amp;logoColor=white" alt="Vim">&nbsp;
+            <img src="https://img.shields.io/badge/-Github-black.svg?style=for-the-badge&amp;logo=github&amp;logoColor=white" alt="Github">&nbsp;
+            <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&amp;logo=linux&amp;logoColor=black" alt="Linux">&nbsp;
+            <img src="https://img.shields.io/badge/-VSCODE-blue.svg?style=for-the-badge&amp;logo=visual-studio-code" alt="VS Code">&nbsp;
+            <img src="https://img.shields.io/badge/-Git-black.svg?style=for-the-badge&amp;logo=git&amp;logoColor=white" alt="Git">&nbsp;</p>
+
+    </section>
+    <section id="GitHub-Stats">
+        <h2 id="-github-stats-">📊 GitHub Stats:</h2>
+        <p><img src="https://github-readme-streak-stats.herokuapp.com/?user=BastionAtackDev&amp;theme=dark&amp;hide_border=false" alt=""><br/>
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=BastionAtackDev&amp;theme=dark&amp;hide_border=false&amp;include_all_commits=true&amp;count_private=true&amp;layout=compact" alt=""></p>
+    </section>
+    <section id="Projects">
+        <h2>Projects</h2>
+        <div id="Projects-grid">
+            <div class="project" id="a">
+                <a href="https://github.com/BastionAtackDev/Paragrapho"><h3 onmouseover="projects()" onmouseleave="projectsleave()">Paragrapho</h3></a>
+                <p>Paragrapho is a open-surce text editor.</p>
+            </div>
+            <div class="project" id="b">
+                <a href="https://github.com/BastionAtackDev/Fibonacci-on-web"><h3>Fibonacci-on-web</h3></a>
+                <p>Generate Fibonacci sequence with html and javascript</p>
+            </div>
+            <div class="project" id="c">
+                <a href="https://github.com/BastionAtackDev/To-Do-list"><h3> To-Do-list</h3></a>
+                <p>Manage your daily activitys</p>
+            </div>
+            <div class="project" id="d">
+                <a href="https://github.com/BastionAtackDev/Fibo.js"><h3>Fibo.js</h3></a>
+                <p>Generate the Fibonacci sequence for your node projects</p>
+            </div>
+            <div class="project" id="e">
+                <a href="https://github.com/BastionAtackDev/Rock-Paper-Scissors-Game"><h3>Rock-Paper-Scissors-Game</h3></a>
+                <p>Play rock-paper-scissors with a computer</p>
+            </div>
+            <div class="project" id="f">
+                <a href="https://github.com/BastionAtackDev/Vowel-Counter"><h3>Vowel-Counter</h3></a>
+                <p>Count the vowels in a given text</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    if (window.innerWidth < 496){
+        document.querySelector("#GitHub-Stats").innerHTML = ""
+    }
+    function projects(){
+        document.querySelector("h3").innerHTML = "Paragrapho (click on the title to go to the github page)";
+    };
+    function projectsleave(){
+        document.querySelector("h3").innerHTML = "Paragrapho";
+    };
+    </script>
+</body>
+</html>
