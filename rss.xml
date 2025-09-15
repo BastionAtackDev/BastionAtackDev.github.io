@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title>BastionAtackDev's site</title>
+<link>https://bastionatackdev.github.io/</link>
+<description>A little site with interesting things</description>
+  <item>
+    <title>Using a 4GB laptop in 2025 (Also using a hard disk)</title>
+    <link>BastionAtackDev.github.io/4giglaptop.html</link>
+     <description>An exemple of using old and not so powerfull devices in 2025</description>
+  </item>
+</channel>
+</rss>
