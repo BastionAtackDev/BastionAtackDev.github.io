@@ -1,15 +1,40 @@
 :root {
-  --background: #331133;
-  --foreground: #cc6699;
+  /* --background: #1f1f1f; */
+  --background: #420420;
+  --background-dark: #3b051d;
+  --foreground: #37ff37;
+  --color0: #151515; 
+  --color8: #ffffff; 
+  --color1: #e61111; 
+  --color9: #ff0000;
+  --color2:  #19e619; 
+  --color10: #00ff00;
+  --color3:  #e21270; 
+  --color11: #ffff00;
+  --color4:  #1212db; 
+  --color12: #0000ff;
+  --color5:  #e1651a; 
+  --color13: #d600ff;
+  --color6:  #119fde;
+  --color14: #00b1ff;
+  --color7:  #aaaaaa;
+  --color15: #ffffff;
 }
 
-* {
+/* * { */
+  /* background-color: var(--background); */
+  /* color: var(--foreground); */
+
+/* } */
+main {
+  /* background-color: var(--color5); */
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+html {
+  text-align: center;
   background-color: var(--background);
   color: var(--foreground);
-
-}
-body {
-  text-align: center;
 }
 a {
   color: #37ff37;
@@ -17,7 +42,23 @@ a {
 }
 .post{
   color: var(--foreground);
-  background-color: #442244
+  background-color: var(--background-dark);
   /* margin: 10px 50% 10px 50%; */
-  width: 50em;
+  /* width: 50em; */
+  margin: 0px 4vw;
+  border-style: outset;
+  
+}
+
+.microposts{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  /* gap: 1em; */
+}
+
+.micropost{
+  margin: 5px 4vw 5px 4vw;
+  color: var(--foreground);
+  background-color: var(--background-dark);
+  border-style: groove;
 }
