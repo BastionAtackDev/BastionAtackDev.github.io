@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relativity Worldlines (Observer Frame)</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:#000;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+canvas{display:block;}
+
+#controls{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:rgba(0,0,0,0.8);
+    padding:12px;
+    border-radius:10px;
+    z-index:10;
+}
+
+input[type=range]{width:260px;}
+
+button{
+    margin-top:6px;
+    padding:6px 10px;
+}
+
+.value{
+    color:#66ccff;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div id="controls">
+
+    <div>
+        Observer velocity:
+        <input id="observer" type="range" min="-0.95" max="0.95" step="0.001" value="0">
+        <span id="obsValue" class="value">0.000 c</span>
+    </div>
+
+    <div id="gammaDisplay">γ = 1.0000</div>
+
+    <br>
+
+    <button id="pauseBtn">Pause</button>
+
+    <br><br>
+
+    <div>
+        Time scroll<br>
+        <input id="timeScroll" type="range" min="0" max="0" step="0.01">
+    </div>
+
+    <br>
+
+    <div>
+        Time zoom<br>
+        <input id="zoomSlider" type="range" min="10" max="150" value="50">
+    </div>
+
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+}
+resize();
+addEventListener("resize", resize);
+
+const observerSlider = document.getElementById("observer");
+const obsValue = document.getElementById("obsValue");
+const gammaDisplay = document.getElementById("gammaDisplay");
+
+const pauseBtn = document.getElementById("pauseBtn");
+const timeScroll = document.getElementById("timeScroll");
+const zoomSlider = document.getElementById("zoomSlider");
+
+/* physics */
+function gamma(v){
+    return 1 / Math.sqrt(1 - v*v);
+}
+
+/* relativistic velocity addition */
+function transformVelocity(u,v){
+    return (u - v) / (1 - u*v);
+}
+
+/* Lorentz transform */
+function lorentz(x,t,v){
+    const g = gamma(v);
+    return {
+        x: g * (x - v*t),
+        t: g * (t - v*x)
+    };
+}
+
+/* particles */
+const particles = [
+    {x0:-180, v:-0.85, color:"#ff5555", trail:[]},
+    {x0:-90,  v:-0.45, color:"#ffaa00", trail:[]},
+    {x0:0,    v:0.00,  color:"#00ff88", trail:[]},
+    {x0:100,  v:0.55,  color:"#44aaff", trail:[]},
+    {x0:190,  v:0.92,  color:"#bb66ff", trail:[]}
+];
+
+const SPACE_SCALE = 2.5;
+let TIME_SCALE = 50;
+const RADIUS = 6;
+
+let simulationTime = 0;
+let cameraTime = 0;
+
+let paused = false;
+let dragging = false;
+
+let last = performance.now();
+
+/* controls */
+pauseBtn.onclick = () => {
+    paused = !paused;
+    pauseBtn.textContent = paused ? "Resume" : "Pause";
+};
+
+zoomSlider.oninput = () => {
+    TIME_SCALE = Number(zoomSlider.value);
+};
+
+timeScroll.addEventListener("mousedown", () => dragging = true);
+window.addEventListener("mouseup", () => dragging = false);
+
+timeScroll.oninput = () => {
+    cameraTime = Number(timeScroll.value);
+};
+
+canvas.addEventListener("wheel", e => {
+    e.preventDefault();
+
+    cameraTime -= e.deltaY * 0.02;
+    cameraTime = Math.max(0, cameraTime);
+    timeScroll.value = cameraTime;
+
+},{ passive:false });
+
+/* worldline */
+function drawWorldline(points, offsetX, color){
+
+    for(let i=1;i<points.length;i++){
+
+        const p0 = points[i-1];
+        const p1 = points[i];
+
+        const y0 = canvas.height - (p0.t - cameraTime) * TIME_SCALE;
+        const y1 = canvas.height - (p1.t - cameraTime) * TIME_SCALE;
+
+        const alpha = i / points.length;
+
+        ctx.strokeStyle =
+            color + Math.floor(alpha*255).toString(16).padStart(2,"0");
+
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.moveTo(offsetX + p0.x * SPACE_SCALE, y0);
+        ctx.lineTo(offsetX + p1.x * SPACE_SCALE, y1);
+        ctx.stroke();
+    }
+}
+
+function animate(){
+
+    const now = performance.now();
+    const dt = (now - last)/1000;
+    last = now;
+
+    if(!paused)
+        simulationTime += dt;
+
+    const t = simulationTime;
+
+    const frameV = parseFloat(observerSlider.value);
+
+    obsValue.textContent = frameV.toFixed(3) + " c";
+    gammaDisplay.textContent = "γ = " + gamma(frameV).toFixed(4);
+
+    timeScroll.max = simulationTime;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const centerX = canvas.width/2;
+
+    ctx.strokeStyle="#444";
+    ctx.beginPath();
+    ctx.moveTo(centerX,0);
+    ctx.lineTo(centerX,canvas.height);
+    ctx.stroke();
+
+    for(const p of particles){
+
+        const xLab = p.x0 + p.v*t;
+
+        const L = lorentz(xLab,t,frameV);
+
+        const vPrime = transformVelocity(p.v, frameV);
+
+        p.trail.push({x:L.x, t:L.t});
+
+        const y = canvas.height - (L.t - cameraTime) * TIME_SCALE;
+
+        drawWorldline(p.trail, centerX, p.color);
+
+        /* particle */
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(centerX + L.x * SPACE_SCALE, y, RADIUS, 0, Math.PI*2);
+        ctx.fill();
+
+        /* velocity labels */
+        ctx.fillStyle = "white";
+        ctx.font = "12px monospace";
+
+        ctx.fillText(
+            `v=${p.v.toFixed(2)}c`,
+            centerX + L.x * SPACE_SCALE + 10,
+            y - 10
+        );
+
+        ctx.fillText(
+            `v'=${vPrime.toFixed(2)}c`,
+            centerX + L.x * SPACE_SCALE + 10,
+            y + 10
+        );
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
